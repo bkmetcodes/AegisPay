@@ -4,44 +4,32 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.bekacodes.aegispay.ui.theme.AegisPayTheme
+import androidx.activity.viewModels
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.bekacodes.aegispay.data.AegisPayDatabase
+import com.bekacodes.aegispay.ui.AegisPayScreen
+import com.bekacodes.aegispay.ui.AegisPayViewModel
 
 class MainActivity : ComponentActivity() {
+
+    private val database by lazy { AegisPayDatabase.getInstance(applicationContext) }
+    private val viewModel: AegisPayViewModel by viewModels {
+        AegisPayViewModel.provideFactory(database.dao())
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            AegisPayTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+            MaterialTheme {
+                val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+                AegisPayScreen(
+                    uiState = uiState,
+                    onIntent = viewModel::onIntent
+                )
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    AegisPayTheme {
-        Greeting("Android")
     }
 }
