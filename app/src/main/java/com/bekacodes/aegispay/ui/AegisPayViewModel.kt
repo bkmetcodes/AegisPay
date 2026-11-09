@@ -10,6 +10,8 @@ import com.bekacodes.aegispay.data.LedgerRowEntity
 import com.bekacodes.aegispay.domain.AiSecurityAgent
 import com.bekacodes.aegispay.domain.ParsedSecurityCommand
 import com.bekacodes.aegispay.security.KeystoreVaultCipher
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +23,8 @@ import kotlinx.coroutines.launch
 import java.util.UUID
 import kotlin.random.Random
 
-class AegisPayViewModel(
+@HiltViewModel
+class AegisPayViewModel @Inject constructor(
     private val dao: AegisPayDao,
     private val cipher: KeystoreVaultCipher = KeystoreVaultCipher(),
     private val aiAgent: AiSecurityAgent = AiSecurityAgent()

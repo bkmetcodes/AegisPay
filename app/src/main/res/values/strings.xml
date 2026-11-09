@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">AegisPay</string>
+    <string name="nfc_service_description">AegisPay Tokenized Host Card Emulation Service</string>
+    <string name="ppse_aid_description">AegisPay PPSE Payment Service</string>
 </resources>
